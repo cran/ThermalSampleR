@@ -75,7 +75,7 @@ boot_two <- function(data,
                                                               # Sample with replacement
                                                               replace = TRUE))) %>%
     dplyr::mutate(calc = purrr::map(sample_data,
-                                    ~ dplyr::summarise(.,
+                                    ~ dplyr::reframe(.,
                                                        mean_val = mean( {{ response }} ),
                                                        sd_val = stats::sd(( {{ response }} ))))) %>%
     dplyr::select({{ groups_col }}, sample_size, iter, calc) %>%
@@ -103,16 +103,21 @@ boot_two <- function(data,
                                 sp2_data,
                                 by = c("sample_size", "iter"))
 
+ # print(colnames(comb_data))
+
   # Let's keep only the columns we need, as things are about to get real
+  # comb_data <- comb_data %>%
+  #   dplyr::select(sample_size, #2
+  #                 iter, # 3
+  #                 groups_col.x, #1
+  #                 mean_val.x, #4
+  #                 sd_val.x,#5
+  #                 groups_col.y,#10
+  #                 mean_val.y,#11
+  #                 sd_val.y)#12
+  #
   comb_data <- comb_data %>%
-    dplyr::select(sample_size,
-                  iter,
-                  col.x,
-                  mean_val.x,
-                  sd_val.x,
-                  col.y,
-                  mean_val.y,
-                  sd_val.y)
+    dplyr::select(1,2,3,4,5,10,11,12)
 
   # Add student t CI's
   comb_data <- comb_data %>%
@@ -129,7 +134,7 @@ boot_two <- function(data,
   # Calculate summary statistics
   comb_data_sum <- comb_data %>%
     dplyr::group_by(sample_size) %>%
-    dplyr::summarise(mean_low_ci = mean(lower_ci),
+    dplyr::reframe(mean_low_ci = mean(lower_ci),
                      mean_upp_ci    = mean(upper_ci),
                      mean_diff      = mean(mean_diff),
                      width_ci       = mean_upp_ci - mean_low_ci,

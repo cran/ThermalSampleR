@@ -72,7 +72,7 @@ boot_one <- function(data,
                                                              # Sample with replacement
                                                              replace = TRUE))) %>%
     dplyr::mutate(calc = purrr::map(sample_data,
-                                    ~dplyr::summarize(.,
+                                    ~dplyr::reframe(.,
                                                       mean_val = mean( {{ response }} ),
                                                       sd_val = stats::sd(( {{ response }} ))))) %>%
     dplyr::select({{ groups_col }}, sample_size, iter, calc) %>%
@@ -121,7 +121,7 @@ boot_one <- function(data,
   # Calculate summary statistics
   data_sum <- boot_comb %>%
     dplyr::group_by({{ groups_col }}, sample_size) %>%
-    dplyr::summarise(mean_low_ci    = mean(lower_ci),
+    dplyr::reframe(mean_low_ci    = mean(lower_ci),
                      mean_upp_ci    = mean(upper_ci),
                      mean_ct        = mean(mean_val),
                      width_ci       = mean_upp_ci - mean_low_ci,
