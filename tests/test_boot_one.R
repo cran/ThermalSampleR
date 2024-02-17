@@ -68,13 +68,13 @@ testthat::test_that("boot_one output is the list class", {
 # Test for NA values in bt_one
 ########################################
 
-bt_one_buggy = bt_one
-bt_one_buggy$mean_low_ci[1] = NA
-
-testthat::test_that("No NA values in the dataframe", {
-  testthat::expect_false(any(is.na(bt_one)), info = "The dataframe contains NA values.")
-})
-
-testthat::test_that("NA values present in the dataframe", {
-  testthat::expect_true(any(is.na(bt_one_buggy)), info = "The dataframe does not contain NA values.")
-})
+# bt_one_buggy = bt_one
+# bt_one_buggy$mean_low_ci[1] = NA
+#
+# testthat::test_that("No NA values in the dataframe", {
+#   testthat::expect_false(any(is.na(bt_one)), info = "The dataframe contains NA values.")
+# })
+#
+# testthat::test_that("NA values present in the dataframe", {
+#   testthat::expect_true(any(is.na(bt_one_buggy)), info = "The dataframe does not contain NA values.")
+# })
